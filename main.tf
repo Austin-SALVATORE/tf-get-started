@@ -16,6 +16,16 @@ data "aws_subnets" "default" {
   }
 }
 
+terraform {
+    backend "s3" {
+      bucket = "acebyte-tfstate"
+      key    = "dev/terraform.tfstate"
+      region = "eu-west-3"
+      encrypt = true
+      dynamodb_table = "terrform-lock-table"
+    }
+  }
+
 
 
 resource "aws_security_group" "ec2_sg" {
@@ -44,6 +54,7 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
 
 
 /* EC2 */
@@ -134,3 +145,4 @@ resource "aws_lb_listener" "gst" {
 #  Add Step Function
 #  Add RDS
 #  Try to make this file modulized
+#  
